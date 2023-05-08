@@ -39,6 +39,7 @@ def Laplacian(img):
 
     return lap_img
 
+
 def High_Boost(img, A):
     new_img = img.copy()
     height, width, channel = img.shape
