@@ -11,20 +11,23 @@ def histogram_equalization(image, channel, status, max_value=256):
     height = 0
     width = 0
     img = image.copy()
+    # implement RGB case
     if status == 1:
         height, width, channels = image.shape
     else:
+    # implement HSI or LAB case (preprocessing)
         height = len(image)
         width = len(image[0])
         for i in range(height):
             for j in range(width):
-                # HSI * 255 -> recover to 0 - 255
+                # HSI * 255 -> recover to 0 - 255 
                 if status == 2:
                     img[i][j][channel] = int(img[i][j][channel] * 255)
                     img[i][j][channel] = clamp_pixel_value(img[i][j][channel])
                 else:
                     img[i][j][channel] = int(img[i][j][channel])
 
+    # get cdf
     prefix_sum = [0 for _ in range(max_value)]
     for i in range(height):
         for j in range(width):
@@ -184,8 +187,8 @@ for file in file_names:
 
     # COLOR ENHANCEMENT
     result_RGB = histogram_equalization(histogram_equalization(histogram_equalization(image_RGB, 0, 1), 1, 1), 2, 1)
-    tmp_HSI = convert_HSI_to_RGB(histogram_equalization(image_HSI, 2, 2))
-    tmp_LAB = convert_LAB_to_RGB(histogram_equalization(image_LAB, 0, 3, 101))
+    tmp_HSI = convert_HSI_to_RGB(histogram_equalization(image_HSI, 2, 2)) # only process I channel
+    tmp_LAB = convert_LAB_to_RGB(histogram_equalization(image_LAB, 0, 3, 101)) # L max vale = 100, only process L channel
 
     # BACK TO IMAGE FORM
     result_HSI = image.copy()
@@ -200,7 +203,7 @@ for file in file_names:
             for k in range(3):
                 result_LAB[i][j][k] = tmp_LAB[i][j][k]
 
-    # # DISPLAY all 
+    # # 看大張圖解註解這邊
     # cv.imshow("Original", image)
     # cv.imshow("RGB", result_RGB)
     # cv.imshow("HSI", result_HSI)
