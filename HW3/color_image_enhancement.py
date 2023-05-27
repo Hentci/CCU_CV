@@ -1,13 +1,48 @@
 import math
 import cv2 as cv
+import matplotlib.pyplot as plt
 
 # Avoid pixel values over the range
 def clamp_pixel_value(x):
-    if x < 0:
-        return 0
-    if x > 255:
-        return 255
-    return x
+    return max(0, min(x, 255))
+
+# Use histogram equalization to enhance image
+def histogram_equalization(image, channel, status, max_value=256):
+    height = 0
+    width = 0
+    img = image.copy()
+    if status == 1:
+        height, width, channels = image.shape
+    else:
+        height = len(image)
+        width = len(image[0])
+        for i in range(height):
+            for j in range(width):
+                # HSI * 255 -> recover to 0 - 255
+                if status == 2:
+                    img[i][j][channel] = int(img[i][j][channel] * 255)
+                    img[i][j][channel] = clamp_pixel_value(img[i][j][channel])
+                else:
+                    img[i][j][channel] = int(img[i][j][channel])
+
+    prefix_sum = [0 for _ in range(max_value)]
+    for i in range(height):
+        for j in range(width):
+            prefix_sum[img[i][j][channel]] = prefix_sum[img[i][j][channel]] + 1
+
+    for i in range(1, max_value):
+        prefix_sum[i] = prefix_sum[i - 1] + prefix_sum[i]
+
+    total_size = height * width
+    for i in range(height):
+        for j in range(width):
+            value = int(round(prefix_sum[int(img[i][j][channel])] / total_size * (max_value - 1)))
+            if status == 2:  # HSI -> transfer back to 0 - 1
+                img[i][j][channel] = float(value / 255)
+            else:
+                img[i][j][channel] = value
+
+    return img
 
 # Convert from RGB to HSI
 def convert_RGB_to_HSI(image):
@@ -67,44 +102,6 @@ def convert_HSI_to_RGB(image):
                 R = 3 * I - (G + B)
             rgb_image[i][j] = [clamp_pixel_value(B * 255), clamp_pixel_value(G * 255), clamp_pixel_value(R * 255)]
     return rgb_image
-
-# Use histogram equalization to enhance image
-def histogram_equalization(image, channel, status, max_value=256):
-    height = 0
-    width = 0
-    img = image.copy()
-    if status == 1:
-        height, width, channels = image.shape
-    else:
-        height = len(image)
-        width = len(image[0])
-        for i in range(height):
-            for j in range(width):
-                # HSI * 255 -> recover to 0 - 255
-                if status == 2:
-                    img[i][j][channel] = int(img[i][j][channel] * 255)
-                    img[i][j][channel] = clamp_pixel_value(img[i][j][channel])
-                else:
-                    img[i][j][channel] = int(img[i][j][channel])
-
-    prefix_sum = [0 for _ in range(max_value)]
-    for i in range(height):
-        for j in range(width):
-            prefix_sum[img[i][j][channel]] = prefix_sum[img[i][j][channel]] + 1
-
-    for i in range(1, max_value):
-        prefix_sum[i] = prefix_sum[i - 1] + prefix_sum[i]
-
-    total_size = height * width
-    for i in range(height):
-        for j in range(width):
-            value = int(round(prefix_sum[int(img[i][j][channel])] / total_size * (max_value - 1)))
-            if status == 2:  # HSI -> transfer back to 0 - 1
-                img[i][j][channel] = float(value / 255)
-            else:
-                img[i][j][channel] = value
-
-    return img
 
 # RGB to LAB function
 def h(q):
@@ -176,6 +173,7 @@ case = 1
 file_names = ["aloe.jpg", "church.jpg", "house.jpg", "kitchen.jpg"]
 file_names = ["./HW3_test_image/" + name for name in file_names]
 for file in file_names:
+    print('Processing ' + file + ', wait a few seconds please ~')
     image = cv.imread(file)
     if image is None:
         print(f"Failed to read image: {file_names}")
@@ -202,10 +200,36 @@ for file in file_names:
             for k in range(3):
                 result_LAB[i][j][k] = tmp_LAB[i][j][k]
 
-    # DISPLAY
-    cv.imshow("Original", image)
-    cv.imshow("RGB", result_RGB)
-    cv.imshow("HSI", result_HSI)
-    cv.imshow("LAB", result_LAB)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
+    # # DISPLAY all 
+    # cv.imshow("Original", image)
+    # cv.imshow("RGB", result_RGB)
+    # cv.imshow("HSI", result_HSI)
+    # cv.imshow("LAB", result_LAB)
+    # cv.waitKey(0)
+    # cv.destroyAllWindows()
+
+    # Create a new figure
+    fig = plt.figure()
+
+    # Add subplots for each image
+    ax1 = fig.add_subplot(2, 2, 1)
+    ax1.imshow(image)
+    ax1.set_title("Original")
+
+    ax2 = fig.add_subplot(2, 2, 2)
+    ax2.imshow(result_RGB)
+    ax2.set_title("RGB")
+
+    ax3 = fig.add_subplot(2, 2, 3)
+    ax3.imshow(result_HSI)
+    ax3.set_title("HSI")
+
+    ax4 = fig.add_subplot(2, 2, 4)
+    ax4.imshow(result_LAB)
+    ax4.set_title("LAB")
+
+    # Adjust spacing between subplots
+    fig.tight_layout()
+
+    # Display the figure
+    plt.show()
