@@ -203,7 +203,7 @@ for file in file_names:
             for k in range(3):
                 result_LAB[i][j][k] = tmp_LAB[i][j][k]
 
-    # # 看大張圖解註解這邊
+    # # 看大張圖 ↓ 解註解這邊
     # cv.imshow("Original", image)
     # cv.imshow("RGB", result_RGB)
     # cv.imshow("HSI", result_HSI)
