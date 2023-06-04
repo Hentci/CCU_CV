@@ -1,6 +1,5 @@
 import math
 import cv2 as cv
-import matplotlib.pyplot as plt
 import tkinter as tk
 from PIL import Image, ImageTk
 import tkinter.filedialog as filedialog

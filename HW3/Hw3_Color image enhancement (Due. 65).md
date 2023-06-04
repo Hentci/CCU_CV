@@ -4,7 +4,7 @@ tags: 影像處理HW
 
 # Hw3_Color image enhancement (Due. 6/5)
 
-#### 409410014 資工三 柯柏旭 (hand in 5/28)
+#### 409410014 資工三 柯柏旭 (hand in 6/2)
 
 ## Technical description
 
@@ -18,6 +18,7 @@ tags: 影像處理HW
 ```
 matplotlib==3.7.1
 opencv_python==4.7.0.72
+Pillow==9.5.0
 ```
 
 #### 如何執行
@@ -40,6 +41,28 @@ python color_image_enhancement.py
 ```
 
 如果要單獨看大張圖，可以把程式碼中標記的地方解註解後執行。
+
+也另外實做了UI版本的程式，可以輸入:
+
+```
+python3 UI_version.py
+```
+
+或是
+
+```
+python UI_version.py
+```
+
+執行後，從`Load Image`這個按鈕讀入欲執行的圖片，並且按下`Process Image`便會自動對圖片的各個色彩空間做enhancement。
+
+
+
+示例圖:
+
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230602171112362.png" alt="image-20230602171112362" style="zoom: 67%;" />
+
+
 
 ### 程式碼解釋
 
@@ -298,6 +321,8 @@ def convert_LAB_to_RGB(image):
 和前兩次相比，這次作業真的爆炸難。原本想說只要乖乖把老師ppt上的轉換公式都刻上去就好，但是在生圖的時候馬上報一堆bug。還好大部份都是邊界問題，這個問題蠻常導致在轉換的時候超出邊界導致圖無法顯示。
 
 實驗結果也挺令人意外的，原本想說都會一致RGB強化後的結果會比較好，但是其實根據每張圖的不同都會有自己的需求。像是`aloe.jpg`的話RGB比較好，`church.jpg`的話感覺HSI和LAB比較好，`house.jpg`的話HSI比較舒服，`kitchen.jpg`的話也是HSI。感覺由亮到暗RGB都會處理的糊糊的，這種時候因為HSI保持色相（H）和飽和度（S）的不變性，所以就會強化的比較成功。
+
+這次作業時間也比較充裕，因此也寫了UI版本來實做。原本想要使用pyinstaller把UI版本轉成.exe檔，不過freeze後沒想到變成1GB多，後來還是作罷。
 
 ## References and Appendix
 - [RGB與HSI互換](https://blog.csdn.net/qq_30091945/article/details/78236347)

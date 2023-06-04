@@ -203,7 +203,9 @@ for file in file_names:
             for k in range(3):
                 result_LAB[i][j][k] = tmp_LAB[i][j][k]
 
-    # # 看大張圖 ↓ 解註解這邊
+
+    ''' cv '''
+    # 看大張圖 ↓ 解註解這邊, 註解下面plt部份
     # cv.imshow("Original", image)
     # cv.imshow("RGB", result_RGB)
     # cv.imshow("HSI", result_HSI)
@@ -211,8 +213,15 @@ for file in file_names:
     # cv.waitKey(0)
     # cv.destroyAllWindows()
 
+    ''' plt '''
     # Create a new figure
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10, 10))
+
+    # Convert BGR to RGB format using array slicing
+    image = image[:, :, ::-1]
+    result_RGB = result_RGB[:, :, ::-1]
+    result_HSI = result_HSI[:, :, ::-1]
+    result_LAB = result_LAB[:, :, ::-1]
 
     # Add subplots for each image
     ax1 = fig.add_subplot(2, 2, 1)
