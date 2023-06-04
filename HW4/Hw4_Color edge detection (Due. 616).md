@@ -42,6 +42,8 @@ python Edge_Detection.py
 
 如果要單獨看各張圖，可以把程式碼中標記的地方解註解後執行。
 
+當中還有實做除了傳統3x3以外的sobel operator, 包含5x5及10x10。如果要使用，除了替換sobel operator以外，還需要更改padding和套用sobel operator的一些數值。
+
 也另外實做了UI版本的程式，可以輸入:
 
 ```
@@ -115,7 +117,7 @@ def sobel_operator(image):
 8. 將梯度大小和梯度方向的值轉換為無符號8位整數（uint8）的格式。
 9. 返回計算後的梯度大小（gradient_magnitude）、水平梯度（gradient_x）和垂直梯度（gradient_y）。
 
-#### sobel operator
+#### sobel operator (3 x 3)
 
 - $g_x$
 
@@ -134,6 +136,56 @@ def sobel_operator(image):
 
  $g = \sqrt{g_x^2 + g_y^2}$
 
+#### sobel operator (5 x 5)
+
+```python
+''' kernel = 5 x 5 '''
+sobel_x = np.array([[-1, -2, 0, 2, 1],
+                [-4, -8, 0, 8, 4],
+                [-6, -12, 0, 12, 6],
+                [-4, -8, 0, 8, 4],
+                [-1, -2, 0, 2, 1]])
+
+sobel_y = np.array([[-1, -4, -6, -4, -1],
+                [-2, -8, -12, -8, -2],
+                [0, 0, 0, 0, 0],
+                [2, 8, 12, 8, 2],
+                [1, 4, 6, 4, 1]])
+```
+
+
+
+#### sobel operator (10 x 10)
+
+```python
+''' kernel = 10 x 10 '''
+sobel_x = np.array([[-1, -2, -3, -4, -5, 0, 5, 4, 3, 2],
+                    [-2, -4, -6, -8, -10, 0, 10, 8, 6, 4],
+                    [-3, -6, -9, -12, -15, 0, 15, 12, 9, 6],
+                    [-4, -8, -12, -16, -20, 0, 20, 16, 12, 8],
+                    [-5, -10, -15, -20, -25, 0, 25, 20, 15, 10],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [5, 10, 15, 20, 25, 0, -25, -20, -15, -10],
+                    [4, 8, 12, 16, 20, 0, -20, -16, -12, -8],
+                    [3, 6, 9, 12, 15, 0, -15, -12, -9, -6],
+                    [2, 4, 6, 8, 10, 0, -10, -8, -6, -4]])
+
+sobel_y = np.array([[-1, -2, -3, -4, -5, 0, 5, 4, 3, 2],
+                    [-2, -4, -6, -8, -10, 0, 10, 8, 6, 4],
+                    [-3, -6, -9, -12, -15, 0, 15, 12, 9, 6],
+                    [-4, -8, -12, -16, -20, 0, 20, 16, 12, 8],
+                    [-5, -10, -15, -20, -25, 0, 25, 20, 15, 10],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [5, 10, 15, 20, 25, 0, -25, -20, -15, -10],
+                    [4, 8, 12, 16, 20, 0, -20, -16, -12, -8],
+                    [3, 6, 9, 12, 15, 0, -15, -12, -9, -6],
+                    [2, 4, 6, 8, 10, 0, -10, -8, -6, -4]])
+```
+
+
+
+
+
 ## Experimental results
 
 ### baboon.png
@@ -149,7 +201,13 @@ def sobel_operator(image):
 
 <img src="/home/hentci/.config/Typora/typora-user-images/image-20230605010915716.png" alt="image-20230605010915716" style="zoom:67%;" />
 
+### pool.png(5 x 5)
 
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230605021606268.png" alt="image-20230605021606268" style="zoom:67%;" />
+
+### pool.png(10 x 10)
+
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230605021729857.png" alt="image-20230605021729857" style="zoom:67%;" />
 
 
 ## Discussions
@@ -157,6 +215,10 @@ def sobel_operator(image):
 從上方的實驗結果與比較可以發現:
 
 水平梯度$G_x$和垂直梯度$G_y$兩者其實單獨就可以做出不錯的邊緣偵測了。不過藉由梯度合成(平方相加開根號)，可以獲得更全面的邊緣信息。
+
+另外，額外時做了kernel 5 x 5和10 x10的sobel operator。原本以為是mask越大越好 ，結果好像大過頭也不太好，像是kernel = 10的時候，就好像在邊地震邊做edge detection一樣。如圖:
+
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230605021927862.png" alt="image-20230605021927862" style="zoom: 67%;" />
 
 不過說真的，單用Sobel operator能獲得的信息還是有限，上面圖像的邊緣感覺還是沒說非常清楚。
 
