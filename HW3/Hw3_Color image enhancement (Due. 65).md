@@ -281,21 +281,21 @@ def convert_LAB_to_RGB(image):
 
 ### aloe.jpg
 
-![image-20230528174451258](/home/hentci/.config/Typora/typora-user-images/image-20230528174451258.png)
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230604223358802.png" alt="image-20230604223358802" style="zoom: 67%;" />
 
 
 ### church.jpg
 
-![image-20230528174505425](/home/hentci/.config/Typora/typora-user-images/image-20230528174505425.png)
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230604223448208.png" alt="image-20230604223448208" style="zoom:67%;" />
 
 
 ### house.jpg
-![image-20230528174517623](/home/hentci/.config/Typora/typora-user-images/image-20230528174517623.png)
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230604223525055.png" alt="image-20230604223525055" style="zoom:67%;" />
 
 
 
 ### kitchen.jpg
-![image-20230528174529679](/home/hentci/.config/Typora/typora-user-images/image-20230528174529679.png)
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230604223550917.png" alt="image-20230604223550917" style="zoom:67%;" />
 
 
 ## Discussions
