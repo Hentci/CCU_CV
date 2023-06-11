@@ -24,6 +24,8 @@ Pillow==9.5.0
 
 #### 如何執行
 
+- 傳統版本(轉灰階後套用mask)
+
 ```
 python3 Edge_Detection.py                  
 ```
@@ -44,7 +46,19 @@ python Edge_Detection.py
 
 當中還有實做除了傳統3x3以外的sobel operator, 包含5x5及10x10。如果要使用，除了替換sobel operator以外，還需要更改padding和套用sobel operator的一些數值。
 
-也另外實做了UI版本的程式，可以輸入:
+- 彩色版本(不轉灰階，RGB直接做detect)
+
+``````
+python3 Edge_Detection_color.py
+``````
+
+或是
+
+```
+python Edge_Detection_color.py
+```
+
+- UI版本的程式，可以輸入:
 
 ```
 python3 UI_version.py               
@@ -58,7 +72,7 @@ python UI_version.py
 
 示例圖:
 
-<img src="/home/hentci/.config/Typora/typora-user-images/image-20230605010755276.png" alt="image-20230605010755276" style="zoom:67%;" />
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230611173421651.png" alt="image-20230611173421651" style="zoom:67%;" />
 
 ### 程式碼解釋
 
@@ -208,6 +222,10 @@ sobel_y = np.array([[-1, -2, -3, -4, -5, 0, 5, 4, 3, 2],
 ### pool.png(10 x 10)
 
 <img src="/home/hentci/.config/Typora/typora-user-images/image-20230605021729857.png" alt="image-20230605021729857" style="zoom:67%;" />
+
+### 彩色版本
+
+<img src="/home/hentci/.config/Typora/typora-user-images/image-20230611173620468.png" alt="image-20230611173620468" style="zoom:50%;" /><img src="/home/hentci/.config/Typora/typora-user-images/image-20230611173649030.png" alt="image-20230611173649030" style="zoom:50%;" /><img src="/home/hentci/.config/Typora/typora-user-images/image-20230611173711353.png" alt="image-20230611173711353" style="zoom:50%;" />
 
 
 ## Discussions
